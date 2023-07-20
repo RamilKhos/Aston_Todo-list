@@ -1,0 +1,41 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    min-height: 100vh;
+    background: -webkit-linear-gradient(33deg, #986969,#c5a9a3,#e0d2d5);
+    background: linear-gradient(33deg, #986969,#c5a9a3,#e0d2d5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    color: #3b3939;
+}
+
+.main {
+    min-width: 40%;
+    max-width: 90%;
+}
+
+.header {
+    font-size: 4rem;
+    font-weight: 300;
+    font-family: 'Satisfy', cursive;
+    color: #FCFAF1;
+    margin-bottom: 3rem;
+}
+
+.main_input {
+    margin-bottom: 2rem;
+}
+
+.main_inner {
+    text-align: center;
+}
+
+.MuiButtonBase-root {
+    min-width: none !important;
+}

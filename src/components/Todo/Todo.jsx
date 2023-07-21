@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import {
   Button, Divider, ListItem, ListItemText,
 } from '@mui/material';

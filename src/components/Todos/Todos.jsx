@@ -1,11 +1,14 @@
+/* eslint-disable react/no-unused-state */
 /* eslint-disable react/sort-comp */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable implicit-arrow-linebreak */
 import { Component } from 'react';
-import { Button, List } from '@mui/material';
+
 import { v4 as uuidv4 } from 'uuid';
+
+import { Button } from '@mui/material';
+import FilterTodos from '../FilterTodos/FilterTodos';
 import { CssTextField } from '../../utils/utils';
-import Todo from '../Todo/Todo';
 
 const checkDataInLS = () => {
   const data = localStorage.getItem('todos');
@@ -32,7 +35,7 @@ class Todos extends Component {
           id: uuidv4(),
           description: '',
           isDone: false,
-          isActiv: true,
+          isActive: true,
           isArchived: false,
         },
         ...prevState.todos,
@@ -68,7 +71,7 @@ class Todos extends Component {
           return {
             ...todo,
             isDone: !todo.isDone,
-            isActiv: !todo.isActiv,
+            isActive: !todo.isActive,
           };
         }
         return todo;
@@ -96,43 +99,29 @@ class Todos extends Component {
 
   render() {
     const { state } = this;
+    const { todos, nameOfTodo } = state;
+
     return (
       <main className="main_inner">
         <div className="main_input">
           <CssTextField
-            value={state.nameOfTodo}
+            value={nameOfTodo}
             onChange={(e) => this.changeNameOfTodo(e)}
             id="custom-css-outlined-input"
             label="Add todo"
             size="small"
             variant="outlined"
           />
-          <Button
-            onClick={() => this.addTodo(state.nameOfTodo)}
-            variant="contained"
-            sx={{ marginLeft: 1, opacity: 0.8 }}
-          >
+          <Button onClick={() => this.addTodo(nameOfTodo)} variant="contained" sx={{ marginLeft: 1, opacity: 0.8 }}>
             Add
           </Button>
         </div>
-
-        <div className="main__content">
-          <List sx={{ width: '100%', color: '#FCFAF1' }}>
-            {state.todos.length > 0 ? (
-              state.todos.map((todo) => (
-                <Todo
-                  todo={todo}
-                  key={todo.id}
-                  deleteTodo={this.deleteTodo}
-                  changeStatusTodo={this.changeStatusTodo}
-                  addTodoToArchive={this.addTodoToArchive}
-                />
-              ))
-            ) : (
-              <div className="main__no-content">No task...</div>
-            )}
-          </List>
-        </div>
+        <FilterTodos
+          todos={todos}
+          addTodoToArchive={this.addTodoToArchive}
+          deleteTodo={this.deleteTodo}
+          changeStatusTodo={this.changeStatusTodo}
+        />
       </main>
     );
   }

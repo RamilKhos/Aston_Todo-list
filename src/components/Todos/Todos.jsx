@@ -33,7 +33,7 @@ class Todos extends Component {
         {
           title,
           id: uuidv4(),
-          description: '',
+          description: null,
           isDone: false,
           isActive: true,
           isArchived: false,

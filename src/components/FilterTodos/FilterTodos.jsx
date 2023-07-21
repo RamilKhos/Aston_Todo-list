@@ -58,7 +58,14 @@ class FilterTodos extends Component {
           />
         </Stack>
 
-        <List sx={{ width: '100%', color: '#FCFAF1' }}>
+        <List sx={{
+          width: '100%',
+          color: '#FCFAF1',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        >
           {arrTodos.length > 0 ? (
             arrTodos.map((todo) => (
               <Todo

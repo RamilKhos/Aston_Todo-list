@@ -38,6 +38,12 @@
     align-items: center;
 }
 
+.main__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .MuiButtonBase-root {
     min-width: none !important;
 }

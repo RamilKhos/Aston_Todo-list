@@ -1,11 +1,5 @@
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/sort-comp */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable implicit-arrow-linebreak */
 import { Component } from 'react';
-
 import { v4 as uuidv4 } from 'uuid';
-
 import { Button } from '@mui/material';
 import FilterTodos from '../FilterTodos/FilterTodos';
 import { CssTextField } from '../../utils/utils';
@@ -25,6 +19,19 @@ class Todos extends Component {
     };
   }
 
+  componentDidMount() {
+    const { todos } = this.state;
+    const todosFromLS = checkDataInLS();
+    return todos !== todosFromLS ? this.setState({ todos: [...todosFromLS] }) : null;
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { todos } = this.state;
+    if (prevState.todos !== todos) {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
+  }
+
   addTodo = (title) => {
     if (title.length < 2) return null;
     const { todos } = this.state;
@@ -33,7 +40,7 @@ class Todos extends Component {
         {
           title,
           id: uuidv4(),
-          description: null,
+          description: '',
           isDone: false,
           isActive: true,
           isArchived: false,
@@ -45,18 +52,31 @@ class Todos extends Component {
     return localStorage.setItem('todos', JSON.stringify(todos));
   };
 
-  addTodoToArchive = (id) =>
+  addDescription = (id, description) => {
     this.setState((prevState) => ({
       todos: prevState.todos.map((todo) => {
         if (todo.id === id) {
           return {
             ...todo,
-            isArchived: !todo.isArchived,
+            description,
           };
         }
         return todo;
       }),
     }));
+  };
+
+  addTodoToArchive = (id) => this.setState((prevState) => ({
+    todos: prevState.todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          isArchived: !todo.isArchived,
+        };
+      }
+      return todo;
+    }),
+  }));
 
   deleteTodo = (id) => {
     this.setState((prevState) => ({
@@ -64,37 +84,23 @@ class Todos extends Component {
     }));
   };
 
-  changeStatusTodo = (id) =>
-    this.setState((prevState) => ({
-      todos: prevState.todos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            isDone: !todo.isDone,
-            isActive: !todo.isActive,
-          };
-        }
-        return todo;
-      }),
-    }));
+  changeStatusTodo = (id) => this.setState((prevState) => ({
+    todos: prevState.todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          isDone: !todo.isDone,
+          isActive: !todo.isActive,
+        };
+      }
+      return todo;
+    }),
+  }));
 
   changeNameOfTodo(e) {
     this.setState({
       nameOfTodo: e.target.value,
     });
-  }
-
-  componentDidUpdate(_, prevState) {
-    const { todos } = this.state;
-    if (prevState.todos !== todos) {
-      localStorage.setItem('todos', JSON.stringify(todos));
-    }
-  }
-
-  componentDidMount() {
-    const { todos } = this.state;
-    const todosFromLS = checkDataInLS();
-    todos !== todosFromLS ? this.setState({ todos: [...todosFromLS] }) : null;
   }
 
   render() {
@@ -121,6 +127,7 @@ class Todos extends Component {
           addTodoToArchive={this.addTodoToArchive}
           deleteTodo={this.deleteTodo}
           changeStatusTodo={this.changeStatusTodo}
+          addDescription={this.addDescription}
         />
       </main>
     );

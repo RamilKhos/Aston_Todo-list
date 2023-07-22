@@ -16,7 +16,7 @@ class FilterTodos extends Component {
 
   render() {
     const {
-      todos, addTodoToArchive, deleteTodo, changeStatusTodo,
+      todos, addTodoToArchive, deleteTodo, changeStatusTodo, addDescription,
     } = this.props;
 
     const { filter } = this.state;
@@ -74,6 +74,7 @@ class FilterTodos extends Component {
                 addTodoToArchive={addTodoToArchive}
                 deleteTodo={deleteTodo}
                 changeStatusTodo={changeStatusTodo}
+                addDescription={addDescription}
               />
             ))
           ) : (

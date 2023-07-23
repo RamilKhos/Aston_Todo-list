@@ -1,50 +1,71 @@
 import {
-  Button, Divider, ListItem, ListItemText,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
-import PanoramaFishEyeSharpIcon from '@mui/icons-material/PanoramaFishEyeSharp';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Component } from 'react';
+import { Buttons } from '../Buttons/Buttons';
+import { accordion, accordionSummary } from '../../utils/utils';
 
-export function Todo({
-  todo, deleteTodo, changeStatusTodo, addTodoToArchive,
-}) {
-  return (
-    <>
-      <ListItem disablePadding>
-        <Button onClick={() => addTodoToArchive(todo.id)} sx={{ minWidth: 0 }}>
-          {todo.isArchived === true ? (
-            <UnarchiveIcon sx={{ color: '#3b3939', margin: 0 }} fontSize="small" />
-          ) : (
-            <ArchiveIcon sx={{ color: '#828484', margin: 0 }} fontSize="small" />
-          )}
-        </Button>
+export default class Todo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isOpenModal: false,
+    };
+  }
 
-        <Button onClick={() => changeStatusTodo(todo.id)} sx={{ marginRight: '1rem', minWidth: 0 }}>
-          {todo.isDone === true ? (
-            <CheckCircleOutlineSharpIcon sx={{ color: '#549D42' }} fontSize="small" />
-          ) : (
-            <PanoramaFishEyeSharpIcon sx={{ color: '#8A3F1B', margin: 0 }} fontSize="small" />
-          )}
-        </Button>
+  modalHandler = (e) => {
+    e.stopPropagation();
+    this.setState((prevState) => ({
+      isOpenModal: !prevState.isOpenModal,
+    }));
+  };
 
-        <ListItemText
-          primary={todo.title}
-          sx={{
+  render() {
+    const {
+      todo, deleteTodo, changeStatusTodo, addTodoToArchive, addDescription, changeTitle,
+    } = this.props;
+    const { isOpenModal } = this.state;
+    return (
+      <Accordion sx={accordion}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header" sx={accordionSummary}>
+          <Buttons
+            todo={todo}
+            deleteTodo={deleteTodo}
+            changeStatusTodo={changeStatusTodo}
+            addTodoToArchive={addTodoToArchive}
+            addDescription={addDescription}
+            modalHandler={this.modalHandler}
+            isOpenModal={isOpenModal}
+            changeTitle={changeTitle}
+          />
+
+          <Typography sx={{
             width: '100%',
-            display: 'inline-block',
             wordWrap: 'break-word',
+            marginRight: '1rem',
             color: todo.isDone ? '#549D42' : '#8A3F1B',
             textDecoration: todo.isDone ? 'line-through' : 'none',
           }}
-        />
-        <Button onClick={() => deleteTodo(todo.id)} sx={{ minWidth: 0 }}>
-          <DeleteIcon sx={{ color: '#F23A29', opacity: 0.6 }} fontSize="small" />
-        </Button>
-      </ListItem>
+          >
+            {todo.title}
+          </Typography>
+        </AccordionSummary>
 
-      <Divider sx={{ opacity: 0.8, marginBottom: 1.5 }} />
-    </>
-  );
+        <AccordionDetails sx={{ position: 'relative' }}>
+          <Typography sx={{
+            color: todo.isDone ? '#549D42' : '#8A3F1B',
+            textDecoration: todo.isDone ? 'line-through' : 'none',
+          }}
+          >
+            <span>{todo.description}</span>
+          </Typography>
+        </AccordionDetails>
+
+      </Accordion>
+    );
+  }
 }

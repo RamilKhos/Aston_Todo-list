@@ -9,34 +9,45 @@ export default class ModalWindow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      description: '',
+      title: props.todo.title,
+      description: props.todo.description,
     };
   }
 
-  textFieldHandler = (e) => {
+  btnClosedHandler = (e) => {
+    const { modalHandler, todo } = this.props;
+    modalHandler(e);
+    this.setState(() => ({
+      title: todo.title,
+      description: todo.description,
+    }));
+  };
+
+  titleHandler = (e) => {
+    this.setState({
+      title: e.target.value,
+    });
+  };
+
+  descriptionHandler = (e) => {
     this.setState({
       description: e.target.value,
     });
   };
 
-  btnAddHandler = (e) => {
-    const { todo, addDescription, modalHandler } = this.props;
-    const { description } = this.state;
+  btnAddDescriptionHandler = (e) => {
+    const {
+      todo, addDescription, modalHandler, changeTitle,
+    } = this.props;
+    const { title, description } = this.state;
     addDescription(todo.id, description);
+    changeTitle(todo.id, title);
     modalHandler(e);
-  };
-
-  btnClosedHandler = (e) => {
-    const { modalHandler } = this.props;
-    modalHandler(e);
-    this.setState(() => ({
-      description: '',
-    }));
   };
 
   render() {
-    const { isOpenModal } = this.props;
-    const { description } = this.state;
+    const { todo, isOpenModal } = this.props;
+    const { title, description } = this.state;
 
     return (
       <Modal
@@ -52,12 +63,14 @@ export default class ModalWindow extends Component {
           </Button>
 
           <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ textAlign: 'center' }}>
-            Добавить описание задачи
+            Change todos
           </Typography>
 
-          <TextField onChange={(e) => this.textFieldHandler(e)} id="outlined-multiline-static" label="Описание задачи" multiline rows={3} />
+          <TextField value={title} onChange={(e) => this.titleHandler(e)} id="outlined-basic" label="Title" variant="outlined" />
 
-          <Button disabled={description === ''} onClick={(e) => this.btnAddHandler(e)} variant="contained" sx={{ marginLeft: 1, opacity: 0.8 }}>Add</Button>
+          <TextField value={description} onChange={(e) => this.descriptionHandler(e)} id="outlined-multiline-static" label="Description" multiline rows={3} />
+
+          <Button disabled={title === todo.title && description === todo.description} onClick={(e) => this.btnAddDescriptionHandler(e)} variant="contained" sx={{ marginLeft: 1, opacity: 0.8 }}>Change</Button>
 
         </Box>
       </Modal>

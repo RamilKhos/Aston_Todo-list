@@ -1,12 +1,17 @@
 import { Component } from 'react';
-import { Chip, List, Stack } from '@mui/material';
-import { Todo } from '../Todo/Todo';
+import {
+  Chip, List, Stack,
+} from '@mui/material';
+import Todo from '../Todo/Todo';
+import { CssTextField } from '../../utils/utils';
+import { filterTodos } from '../Debounce/Debounce';
 
 class FilterTodos extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: 'Все',
+      filter: 'All',
+      search: '',
     };
   }
 
@@ -14,46 +19,41 @@ class FilterTodos extends Component {
     this.setState({ filter: e.target.textContent });
   };
 
+  searchHandler = (e) => {
+    this.setState(() => ({
+      search: e.target.value,
+    }));
+  };
+
   render() {
     const {
-      todos, addTodoToArchive, deleteTodo, changeStatusTodo, addDescription,
+      todos, addTodoToArchive, deleteTodo, changeStatusTodo, addDescription, changeTitle,
     } = this.props;
+    const { filter, search } = this.state;
 
-    const { filter } = this.state;
-    let arrTodos = todos;
+    let updateTodos = todos;
 
-    switch (filter) {
-      case 'Архив':
-        arrTodos = todos.filter((todo) => todo.isArchived);
-        break;
-      case 'Активные':
-        arrTodos = todos.filter((todo) => todo.isActive);
-        break;
-      case 'Выполненные':
-        arrTodos = todos.filter((todo) => todo.isDone);
-        break;
-      default:
-        arrTodos = todos;
-        break;
-    }
+    updateTodos = filterTodos(todos, filter);
+
+    updateTodos = updateTodos.filter((todo) => todo.title.includes(search));
 
     return (
       <div className="main__content">
-        <Stack direction="row" spacing={1} sx={{ marginBottom: '1rem' }}>
-          <Chip label="Все" variant={filter === 'Все' ? 'soft' : 'outlined'} onClick={(e) => this.tabBtnHandler(e)} />
+        <Stack direction="row" spacing={1}>
+          <Chip label="All" variant={filter === 'All' ? 'soft' : 'outlined'} onClick={(e) => this.tabBtnHandler(e)} />
           <Chip
-            label="Активные"
-            variant={filter === 'Активные' ? 'soft' : 'outlined'}
+            label="Active"
+            variant={filter === 'Active' ? 'soft' : 'outlined'}
             onClick={(e) => this.tabBtnHandler(e)}
           />
           <Chip
-            label="Выполненные"
-            variant={filter === 'Выполненные' ? 'soft' : 'outlined'}
+            label="Completed"
+            variant={filter === 'Completed' ? 'soft' : 'outlined'}
             onClick={(e) => this.tabBtnHandler(e)}
           />
           <Chip
-            label="Архив"
-            variant={filter === 'Архив' ? 'soft' : 'outlined'}
+            label="Archive"
+            variant={filter === 'Archive' ? 'soft' : 'outlined'}
             onClick={(e) => this.tabBtnHandler(e)}
           />
         </Stack>
@@ -66,8 +66,18 @@ class FilterTodos extends Component {
           alignItems: 'center',
         }}
         >
-          {arrTodos.length > 0 ? (
-            arrTodos.map((todo) => (
+          <CssTextField
+            value={search}
+            onChange={(e) => this.searchHandler(e)}
+            sx={{ marginBottom: '1rem' }}
+            id="custom-css-outlined-input"
+            size="small"
+            label="Search"
+            variant="standard"
+          />
+
+          {updateTodos.length > 0 ? (
+            updateTodos.map((todo) => (
               <Todo
                 todo={todo}
                 key={todo.id}
@@ -75,6 +85,7 @@ class FilterTodos extends Component {
                 deleteTodo={deleteTodo}
                 changeStatusTodo={changeStatusTodo}
                 addDescription={addDescription}
+                changeTitle={changeTitle}
               />
             ))
           ) : (

@@ -34,8 +34,7 @@ class Todos extends Component {
 
   addTodo = (title) => {
     if (title.length < 2) return null;
-    const { todos } = this.state;
-    this.setState((prevState) => ({
+    return this.setState((prevState) => ({
       todos: [
         {
           title,
@@ -49,18 +48,12 @@ class Todos extends Component {
       ],
       nameOfTodo: '',
     }));
-    return localStorage.setItem('todos', JSON.stringify(todos));
   };
 
   addDescription = (id, description) => {
     this.setState((prevState) => ({
       todos: prevState.todos.map((todo) => {
-        if (todo.id === id) {
-          return {
-            ...todo,
-            description,
-          };
-        }
+        if (todo.id === id) return { ...todo, description };
         return todo;
       }),
     }));
@@ -68,12 +61,7 @@ class Todos extends Component {
 
   addTodoToArchive = (id) => this.setState((prevState) => ({
     todos: prevState.todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          isArchived: !todo.isArchived,
-        };
-      }
+      if (todo.id === id) return { ...todo, isArchived: !todo.isArchived };
       return todo;
     }),
   }));
@@ -97,10 +85,15 @@ class Todos extends Component {
     }),
   }));
 
+  changeTitle = (id, title) => this.setState((prevState) => ({
+    todos: prevState.todos.map((todo) => {
+      if (todo.id === id) { return { ...todo, title }; }
+      return todo;
+    }),
+  }));
+
   changeNameOfTodo(e) {
-    this.setState({
-      nameOfTodo: e.target.value,
-    });
+    this.setState({ nameOfTodo: e.target.value });
   }
 
   render() {
@@ -128,6 +121,7 @@ class Todos extends Component {
           deleteTodo={this.deleteTodo}
           changeStatusTodo={this.changeStatusTodo}
           addDescription={this.addDescription}
+          changeTitle={this.changeTitle}
         />
       </main>
     );

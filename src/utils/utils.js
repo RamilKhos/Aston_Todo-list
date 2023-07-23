@@ -38,7 +38,8 @@ export const CssButton = styled(Button)({
 
 export const accordion = {
   width: '100%',
-  padding: '0 3rem 0 4rem',
+  padding: '0 2rem 0 3.5rem',
+  wordBreak: 'break-all',
   background: 'rgba(197, 169, 163, 0.863)',
   boxShadow: `rgb(155, 134, 129) -5px 5px, 
                 rgba(155, 134, 129, 0.718) -10px 10px, 
@@ -47,7 +48,7 @@ export const accordion = {
                 #9b868100 -25px 25px`,
 };
 
-export const accordionSummary = { wordBreak: 'break-all', padding: '0 2rem' };
+export const accordionSummary = { wordBreak: 'break-all', padding: '0 3rem 0 2rem' };
 
 export const btnToArchive = {
   minWidth: 0,
@@ -64,17 +65,17 @@ export const btnChangeStatus = {
   top: '15%',
 };
 
-export const btnOpenModal = {
+export const btnChangeTodo = {
   minWidth: 0,
   position: 'absolute',
-  right: '-.7rem',
+  right: '.3rem',
   top: '15%',
 };
 
 export const btnDelete = {
   minWidth: 0,
   position: 'absolute',
-  right: '-2.5rem',
+  right: '-1.7rem',
   top: '15%',
 };
 

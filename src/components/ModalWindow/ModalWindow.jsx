@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Component } from 'react';
-import { boxModal, btnClosedModal } from '../../utils/utils';
+import { boxModal, btnClosedModal } from '../../tools/customStylesMuiComponents';
 
 export default class ModalWindow extends Component {
   constructor(props) {

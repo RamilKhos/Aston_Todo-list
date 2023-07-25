@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import ModalWindow from '../ModalWindow/ModalWindow';
 import {
   btnChangeStatus, btnDelete, btnChangeTodo, btnToArchive,
-} from '../../utils/utils';
+} from '../../tools/customStylesMuiComponents';
 
 export function Buttons({
   todo, deleteTodo, changeStatusTodo,

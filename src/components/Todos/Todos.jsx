@@ -2,17 +2,12 @@ import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@mui/material';
 import FilterTodos from '../FilterTodos/FilterTodos';
-import { CssTextField } from '../../utils/utils';
-
-const checkDataInLS = () => {
-  const data = localStorage.getItem('todos');
-  return data ? JSON.parse(data) : [];
-};
+import { CssTextField } from '../../tools/customStylesMuiComponents';
+import { checkDataInLS } from '../../tools/utils';
 
 class Todos extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       todos: [],
       nameOfTodo: '',
@@ -27,6 +22,7 @@ class Todos extends Component {
 
   componentDidUpdate(_, prevState) {
     const { todos } = this.state;
+
     if (prevState.todos !== todos) {
       localStorage.setItem('todos', JSON.stringify(todos));
     }
@@ -92,20 +88,20 @@ class Todos extends Component {
     }),
   }));
 
-  changeNameOfTodo(e) {
+  nameOfTodoHandler(e) {
     this.setState({ nameOfTodo: e.target.value });
   }
 
   render() {
     const { state } = this;
-    const { todos, nameOfTodo } = state;
+    const { nameOfTodo, todos } = state;
 
     return (
-      <main className="main_inner">
-        <div className="main_input">
+      <>
+        <div className="main__input">
           <CssTextField
             value={nameOfTodo}
-            onChange={(e) => this.changeNameOfTodo(e)}
+            onChange={(e) => this.nameOfTodoHandler(e)}
             id="custom-css-outlined-input"
             label="Add todo"
             size="small"
@@ -123,7 +119,7 @@ class Todos extends Component {
           addDescription={this.addDescription}
           changeTitle={this.changeTitle}
         />
-      </main>
+      </>
     );
   }
 }

@@ -3,69 +3,84 @@ import {
   Chip, List, Stack,
 } from '@mui/material';
 import Todo from '../Todo/Todo';
-import { CssTextField } from '../../utils/utils';
-import { filterTodos } from '../Debounce/Debounce';
+import { CssTextField, list } from '../../tools/customStylesMuiComponents';
+import { filteringTodos, debounce } from '../../tools/utils';
 
-class FilterTodos extends Component {
+export default class FilterTodos extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      updateTodos: [],
       filter: 'All',
       search: '',
     };
+    this.debounceLog = debounce(this.searchTodos.bind(this), 500);
   }
 
-  tabBtnHandler = (e) => {
-    this.setState({ filter: e.target.textContent });
-  };
+  componentDidUpdate(prevProps, prevState) {
+    const { todos } = this.props;
+    const { filter, search } = this.state;
 
-  searchHandler = (e) => {
-    this.setState(() => ({
-      search: e.target.value,
-    }));
-  };
+    if (todos !== prevProps.todos) {
+      this.setState({ updateTodos: filteringTodos(todos, filter) });
+    }
+
+    if (filter !== prevState.filter) {
+      this.setState(({
+        updateTodos: filteringTodos(todos, filter),
+        search: '',
+      }));
+    }
+
+    if (search !== prevState.search) {
+      this.debounceLog();
+    }
+  }
+
+  searchTodos() {
+    const { todos } = this.props;
+    const { filter, search } = this.state;
+    const filteredTodos = filteringTodos(todos, filter);
+    const foundTodos = filteredTodos.filter((todo) => todo.title.includes(search));
+    this.setState({ updateTodos: foundTodos });
+  }
+
+  searchHandler(e) {
+    this.setState({ search: e.target.value });
+  }
+
+  tabsHandler(e) {
+    this.setState({ filter: e.target.textContent });
+  }
 
   render() {
     const {
-      todos, addTodoToArchive, deleteTodo, changeStatusTodo, addDescription, changeTitle,
+      addTodoToArchive, deleteTodo, changeStatusTodo, addDescription, changeTitle,
     } = this.props;
-    const { filter, search } = this.state;
-
-    let updateTodos = todos;
-
-    updateTodos = filterTodos(todos, filter);
-
-    updateTodos = updateTodos.filter((todo) => todo.title.includes(search));
+    const { filter, search, updateTodos } = this.state;
 
     return (
       <div className="main__content">
         <Stack direction="row" spacing={1}>
-          <Chip label="All" variant={filter === 'All' ? 'soft' : 'outlined'} onClick={(e) => this.tabBtnHandler(e)} />
+          <Chip label="All" variant={filter === 'All' ? 'soft' : 'outlined'} onClick={(e) => this.tabsHandler(e)} />
           <Chip
             label="Active"
             variant={filter === 'Active' ? 'soft' : 'outlined'}
-            onClick={(e) => this.tabBtnHandler(e)}
+            onClick={(e) => this.tabsHandler(e)}
           />
           <Chip
             label="Completed"
             variant={filter === 'Completed' ? 'soft' : 'outlined'}
-            onClick={(e) => this.tabBtnHandler(e)}
+            onClick={(e) => this.tabsHandler(e)}
           />
           <Chip
             label="Archive"
             variant={filter === 'Archive' ? 'soft' : 'outlined'}
-            onClick={(e) => this.tabBtnHandler(e)}
+            onClick={(e) => this.tabsHandler(e)}
           />
         </Stack>
 
-        <List sx={{
-          width: '100%',
-          color: '#FCFAF1',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-        >
+        <List sx={list}>
           <CssTextField
             value={search}
             onChange={(e) => this.searchHandler(e)}
@@ -76,11 +91,12 @@ class FilterTodos extends Component {
             variant="standard"
           />
 
-          {updateTodos.length > 0 ? (
+          {(updateTodos !== undefined && updateTodos.length > 0) ? (
             updateTodos.map((todo) => (
               <Todo
                 todo={todo}
                 key={todo.id}
+                props={this.props}
                 addTodoToArchive={addTodoToArchive}
                 deleteTodo={deleteTodo}
                 changeStatusTodo={changeStatusTodo}
@@ -96,5 +112,3 @@ class FilterTodos extends Component {
     );
   }
 }
-
-export default FilterTodos;

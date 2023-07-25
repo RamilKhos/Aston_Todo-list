@@ -7,7 +7,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Component } from 'react';
 import { Buttons } from '../Buttons/Buttons';
-import { accordion, accordionSummary } from '../../utils/utils';
+import { accordion, accordionSummary } from '../../tools/customStylesMuiComponents';
 
 export default class Todo extends Component {
   constructor(props) {

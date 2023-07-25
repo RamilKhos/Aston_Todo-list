@@ -36,6 +36,14 @@ export const CssButton = styled(Button)({
   },
 });
 
+export const list = {
+  width: '100%',
+  color: '#FCFAF1',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+};
+
 export const accordion = {
   width: '100%',
   padding: '0 2rem 0 3.5rem',

@@ -7,12 +7,10 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Component } from 'react';
 import { Buttons } from '../Buttons/Buttons';
-import { accordion, accordionSummary } from '../../tools/customStylesMuiComponents';
+import { accordion, accordionSummary, titleTodo } from '../../tools/customStylesMuiComponents';
 import { ThemesColorContext } from '../ThemesColorContext/ThemesColorContext';
 
 export default class Todo extends Component {
-  static contextType = ThemesColorContext;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +37,12 @@ export default class Todo extends Component {
       background: contentBackground.background,
     };
 
+    const stylesTypography = {
+      ...titleTodo,
+      color: todo.isDone ? '#549D42' : '#8A3F1B',
+      textDecoration: todo.isDone ? 'line-through' : 'none',
+    };
+
     return (
       <Accordion sx={{ ...stylesAccordion }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header" sx={accordionSummary}>
@@ -52,17 +56,7 @@ export default class Todo extends Component {
             isOpenModal={isOpenModal}
             changeTitle={changeTitle}
           />
-
-          <Typography sx={{
-            width: '100%',
-            wordWrap: 'break-word',
-            marginRight: '1rem',
-            color: todo.isDone ? '#549D42' : '#8A3F1B',
-            textDecoration: todo.isDone ? 'line-through' : 'none',
-          }}
-          >
-            {todo.title}
-          </Typography>
+          <Typography sx={{ ...stylesTypography }}>{todo.title}</Typography>
         </AccordionSummary>
 
         <AccordionDetails sx={{ position: 'relative' }}>
@@ -74,8 +68,8 @@ export default class Todo extends Component {
             <span>{todo.description}</span>
           </Typography>
         </AccordionDetails>
-
       </Accordion>
     );
   }
 }
+Todo.contextType = ThemesColorContext;

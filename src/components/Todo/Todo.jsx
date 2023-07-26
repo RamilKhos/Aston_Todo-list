@@ -8,8 +8,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Component } from 'react';
 import { Buttons } from '../Buttons/Buttons';
 import { accordion, accordionSummary } from '../../tools/customStylesMuiComponents';
+import { ThemesColorContext } from '../ThemesColorContext/ThemesColorContext';
 
 export default class Todo extends Component {
+  static contextType = ThemesColorContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,8 +32,15 @@ export default class Todo extends Component {
       todo, deleteTodo, changeStatusTodo, addTodoToArchive, addDescription, changeTitle,
     } = this.props;
     const { isOpenModal } = this.state;
+    const { contentBackground } = this.context;
+
+    const stylesAccordion = {
+      ...accordion,
+      background: contentBackground.background,
+    };
+
     return (
-      <Accordion sx={accordion}>
+      <Accordion sx={{ ...stylesAccordion }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header" sx={accordionSummary}>
           <Buttons
             todo={todo}

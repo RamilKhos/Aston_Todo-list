@@ -6,8 +6,6 @@
 
 .container {
     min-height: 100vh;
-    background: -webkit-linear-gradient(33deg, #986969,#c5a9a3,#e0d2d5);
-    background: linear-gradient(33deg, #986969,#c5a9a3,#e0d2d5);
     display: flex;
     flex-direction: column;
     align-items: center;

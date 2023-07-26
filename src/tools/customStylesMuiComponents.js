@@ -36,6 +36,12 @@ export const CssButton = styled(Button)({
   },
 });
 
+export const btnThemeColor = {
+  position: 'absolute',
+  top: '4%',
+  right: '3%',
+};
+
 export const list = {
   width: '100%',
   color: '#FCFAF1',

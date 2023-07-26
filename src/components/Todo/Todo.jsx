@@ -11,8 +11,6 @@ import { accordion, accordionSummary } from '../../tools/customStylesMuiComponen
 import { ThemesColorContext } from '../ThemesColorContext/ThemesColorContext';
 
 export default class Todo extends Component {
-  static contextType = ThemesColorContext;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -79,3 +77,4 @@ export default class Todo extends Component {
     );
   }
 }
+Todo.contextType = ThemesColorContext;

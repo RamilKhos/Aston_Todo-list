@@ -15,7 +15,7 @@ export default class App extends Component {
     };
   }
 
-  toggleTheme = () => {
+  toggleThemeHandler = () => {
     this.setState((prevState) => ({
       theme: prevState.theme === 'light'
         ? 'dark'
@@ -30,19 +30,22 @@ export default class App extends Component {
         <ThemesColorContext.Consumer>
           {({ generalBackground }) => (
             <Box className="container" sx={generalBackground}>
+
               <header className="header">todos</header>
-              <Button onClick={() => this.toggleTheme()} sx={btnThemeColor}>
+
+              <Button onClick={() => this.toggleThemeHandler()} sx={btnThemeColor}>
                 {theme === 'light' ? (
                   <NightlightIcon sx={{ color: '#3b3939' }} />
                 ) : (
                   <LightModeIcon sx={{ color: 'white' }} />
                 )}
               </Button>
+
               <main className="main">
                 <Todos />
               </main>
-            </Box>
 
+            </Box>
           )}
         </ThemesColorContext.Consumer>
       </ThemesColorContext.Provider>

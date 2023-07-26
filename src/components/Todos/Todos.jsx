@@ -17,7 +17,7 @@ class Todos extends Component {
   componentDidMount() {
     const { todos } = this.state;
     const todosFromLS = checkDataInLS();
-    return todos !== todosFromLS ? this.setState({ todos: [...todosFromLS] }) : null;
+    return todos !== todosFromLS ? this.setState({ todos: todosFromLS }) : null;
   }
 
   componentDidUpdate(_, prevState) {

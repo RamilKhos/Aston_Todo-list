@@ -64,6 +64,12 @@ export const accordion = {
 
 export const accordionSummary = { wordBreak: 'break-all', padding: '0 3rem 0 2rem' };
 
+export const titleTodo = {
+  width: '100%',
+  wordWrap: 'break-word',
+  marginRight: '1rem',
+};
+
 export const btnToArchive = {
   minWidth: 0,
   position: 'absolute',

@@ -1,9 +1,6 @@
 ## Todo list
 Using class components
-## Website
-```
-https://stirring-hotteok-f817fc.netlify.app
-```
+## https://aston-todo-list.netlify.app/
 
 ## Features 
 * Add task
